@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Movie Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      src="https://kit.fontawesome.com/21e785dd6b.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script src="index.js" defer></script>
+    <script src="
+https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js
+"></script>
+    <link
+      href="
+https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css
+"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="movie-dashboard">
+      <header class="header">
+        <img class="logo-img" src="./images/logo.png" />
+      </header>
+      <div class="poster-section">
+        <img class="poster-img" src="./images/Poster.png" />
+        <div class="poster-content">
+          <h1 class="poster-heading">John Wick 3 : Parabellum</h1>
+          <p class="poster-description">
+            John Wick is on the run after killing a member of the international
+            assassins' guild, and with a $14 million price tag on his head, he
+            is the target of hit men and women everywhere.
+          </p>
+          <button class="poster-watch-button">
+            <img
+              class="poster-watch-button-play-icon"
+              src="./images/play icon.png"
+            />WATCH TRAILER
+          </button>
+        </div>
+      </div>
+      <div class="movie-results-section">
+        <div class="movie-search-section">
+          <input
+            type="search"
+            class="search-input-box"
+            placeholder="What do you want to watch?"
+            id="searchBox"
+          />
+          <img class="search-icon-img" src="./images/search.png" />
+        </div>
+        <div class="search-results-section" id="searchResultsSection">
+          <img
+            class="search-movie"
+            src="https://m.media-amazon.com/images/M/MV5BYjhiNjBlODctY2ZiOC00YjVlLWFlNzAtNTVhNzM1YjI1NzMxXkEyXkFqcGdeQXVyMjQxNTE1MDA@._V1_.jpg"
+            alt="avatr"
+          />
+          <div class="search-movie-content">
+            <h1 class="search-movie-title">Avatar</h1>
+            <p class="genere">Action, Drama, Science Fiction</p>
+            <p class="search-movie-release-date">Release Date: 2009-12-15</p>
+            <p class="search-movie-description">
+              In the 22nd century, a paraplegic Marine is dispatched to the moon
+              Pandora on a unique mission, but becomes torn between following
+              orders and protecting an alien civilization.
+            </p>
+          </div>
+        </div>
+        <div class="recommended-movies-section">
+          <h1 class="recommended-movies-heading">Recommended Movies</h1>
+          <p class="search-text" id="searchText">
+            Search to get Recommended Videos
+          </p>
+
+          <section
+            class="splide"
+            id="carousel1"
+            aria-label="Splide Basic HTML Example"
+          >
+            <div class="splide__track">
+              <ul class="splide__list" id="carouselList1"></ul>
+            </div>
+          </section>
+        </div>
+        <div class="favorite-movies-section">
+          <div class="filter-section">
+            <h1 class="recommended-movies-heading">Favorites List</h1>
+            <select class="drop-down-options">
+              <option class="option" value="sort">Sort</option>
+              <option class="option" value="name">Sort By Name</option>
+              <option class="option" value="year">Sort By Year</option>
+            </select>
+          </div>
+          <section
+            class="splide"
+            id="carousel2"
+            aria-label="Splide Basic HTML Example"
+          >
+            <div class="splide__track">
+              <ul class="splide__list" id="carouselList2"></ul>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

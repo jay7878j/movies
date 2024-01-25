@@ -1,0 +1,273 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  font-family: "DM Sans", sans-serif;
+}
+
+.movie-dashboard {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding-bottom: 50px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  height: 8vh;
+  background-color: #000;
+}
+
+.logo-img {
+  margin-left: 100px;
+}
+
+.poster-section {
+  position: relative;
+}
+
+.poster-img {
+  width: 100%;
+  height: auto;
+}
+
+.poster-content {
+  position: absolute;
+  top: 40%;
+  left: 100px;
+}
+
+.poster-heading {
+  color: #fff;
+  font-size: 45px;
+}
+
+.poster-description {
+  width: 27%;
+  color: #fff;
+  font-size: 18px;
+  margin: 15px 0 15px 0;
+}
+
+.poster-watch-button {
+  background-color: #be123c;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 14px;
+  column-gap: 10px;
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+}
+
+.movie-results-section {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  /* border: 1px solid red; */
+  width: 90%;
+}
+
+.movie-search-section {
+  align-self: center;
+  width: 50%;
+  display: flex;
+  border: 2px solid red;
+  align-items: center;
+  border-radius: 5px;
+  margin-top: 25px;
+  padding-right: 10px;
+}
+
+.search-input-box {
+  width: 100%;
+  border: none;
+  height: 35px;
+  border-radius: 5px;
+  padding: 0 5px;
+  outline: none;
+  font-weight: 400;
+  font-size: 16px;
+}
+
+.search-icon-img {
+  cursor: pointer;
+}
+
+.recommended-movies-section {
+  margin: 30px 0;
+}
+
+.filter-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.search-results-section {
+  display: flex;
+  margin-top: 30px;
+  column-gap: 30px;
+}
+
+.search-movie {
+  height: 300px;
+}
+
+.search-movie-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.search-movie-title {
+  color: #000;
+  font-family: "Roboto";
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.search-movie-release-date {
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.search-movie-description {
+  color: #000;
+  font-family: "Roboto";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.genere {
+  color: #be123c;
+  font-weight: 500;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+.carousel-img {
+  width: 100%;
+  height: 400px;
+}
+
+.splide__slide {
+  width: 250px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+  margin-right: 20px;
+}
+
+.search-text {
+  text-align: center;
+}
+
+.heart-icon {
+  position: absolute;
+  right: 20px;
+  color: #fff;
+  font-size: 25px;
+  top: 20px;
+}
+
+.recommended-movies-heading {
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.red-heart {
+  color: #be123c;
+}
+
+.movie-title {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+@media (max-width: 768px) {
+  .logo-img {
+    margin-left: 20px;
+  }
+
+  .poster-content {
+    top: 20px;
+    left: 10px;
+  }
+
+  .poster-img {
+    width: 100%;
+    height: 210px;
+  }
+
+  .poster-heading {
+    font-size: 18px;
+  }
+
+  .poster-description {
+    width: 90%;
+    font-size: 12px;
+  }
+
+  .poster-watch-button {
+    padding: 5px;
+    font-size: 12px;
+  }
+
+  .movie-results-section {
+    width: 90%;
+  }
+
+  .movie-search-section {
+    width: 100%;
+  }
+
+  .search-movie {
+    width: auto;
+    height: 150px;
+  }
+
+  .search-movie-title {
+    font-size: 20px;
+  }
+
+  .search-results-section {
+    column-gap: 10px;
+    margin-bottom: 0;
+  }
+
+  .search-movie-release-date,
+  .search-movie-description,
+  .genere {
+    font-size: 12px;
+  }
+
+  .search-movie-release-date {
+    margin: 5px 0;
+  }
+
+  .recommended-movies-heading {
+    font-size: 20px;
+    margin-top: 10px;
+  }
+
+  .carousel-img {
+    height: 200px;
+  }
+
+  .movie-title {
+    font-size: 14px;
+  }
+
+  .genre-para {
+    font-size: 12px;
+  }
+}
