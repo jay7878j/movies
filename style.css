@@ -22,6 +22,7 @@
 
 .logo-img {
   margin-left: 100px;
+  height: 26px;
 }
 
 .poster-section {
@@ -45,7 +46,7 @@
 }
 
 .poster-description {
-  width: 27%;
+  max-width: 400px;
   color: #fff;
   font-size: 18px;
   margin: 15px 0 15px 0;
@@ -106,6 +107,11 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 20px;
+}
+
+.filter-movies-heading {
+  font-size: 32px;
 }
 
 .search-results-section {
@@ -115,13 +121,13 @@
 }
 
 .search-movie {
-  height: 300px;
+  height: 400px;
 }
 
 .search-movie-content {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .search-movie-title {
@@ -153,30 +159,35 @@
   margin-top: 10px;
 }
 
-.carousel-img {
-  width: 100%;
-  height: 400px;
+.splide__slide {
+  position: relative;
 }
 
-.splide__slide {
-  width: 250px;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  row-gap: 10px;
-  margin-right: 20px;
+.carousel-movie-content {
+  padding: 5px;
+}
+
+.carousel-img {
+  height: 400px;
 }
 
 .search-text {
   text-align: center;
 }
 
-.heart-icon {
+.favt-heart-icon-container {
+  background-color: rgba(255, 255, 255, 0.5);
   position: absolute;
-  right: 20px;
-  color: #fff;
-  font-size: 25px;
+  left: 210px;
   top: 20px;
+  border-radius: 50%;
+  padding: 8px;
+}
+
+.heart-icon {
+  color: #000;
+  font-size: 20px;
+  margin-top: 2px;
 }
 
 .recommended-movies-heading {
@@ -193,28 +204,66 @@
   font-weight: 700;
 }
 
+.genre-para {
+  word-wrap: break-word;
+  margin-top: 5px;
+}
+
+.splide__arrows .splide__arrow {
+  background: none;
+  color: #fff !important;
+  font-size: 20px;
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  top: 40% !important;
+  font-weight: 100;
+}
+
+.splide__arrows .splide__arrow--prev {
+  left: -60px;
+}
+
+.splide__arrows .splide__arrow--next {
+  right: -60px;
+}
+
+.drop-down-options {
+  border: none;
+  outline: none;
+  cursor: pointer;
+  color: red;
+  font-size: 20px;
+}
+
 @media (max-width: 768px) {
   .logo-img {
     margin-left: 20px;
+    height: 16px;
+  }
+
+  .poster-section {
+    height: 30vh;
   }
 
   .poster-content {
-    top: 20px;
+    top: 50px;
     left: 10px;
   }
 
   .poster-img {
-    width: 100%;
-    height: 210px;
+    height: 100%;
   }
 
   .poster-heading {
     font-size: 18px;
+    margin: 0;
   }
 
   .poster-description {
     width: 90%;
     font-size: 12px;
+    margin: 8px 0;
   }
 
   .poster-watch-button {
@@ -260,7 +309,8 @@
   }
 
   .carousel-img {
-    height: 200px;
+    width: 100%;
+    height: 160px;
   }
 
   .movie-title {
@@ -269,5 +319,41 @@
 
   .genre-para {
     font-size: 12px;
+  }
+
+  .splide__arrows .splide__arrow {
+    width: 30px;
+    height: 30px;
+    font-size: 10px;
+  }
+
+  .splide__arrows .splide__arrow--prev {
+    left: 0px;
+    background-color: #fff;
+  }
+  .splide__arrows .splide__arrow--next {
+    right: 0px;
+    background-color: #fff;
+  }
+
+  .splide__arrows .splide__arrow {
+    color: #fff;
+  }
+
+  .drop-down-options {
+    font-size: 16px;
+  }
+
+  .filter-movies-heading {
+    font-size: 22px;
+  }
+
+  .favt-heart-icon-container {
+    left: 10px;
+    padding: 5px;
+  }
+
+  .heart-icon {
+    font-size: 14px;
   }
 }

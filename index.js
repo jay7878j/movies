@@ -2,171 +2,204 @@ let userInputEl = document.querySelector("#searchBox");
 let searchResultsSection = document.querySelector("#searchResultsSection");
 let carouselList1El = document.querySelector("#carouselList1");
 let carouselList2El = document.querySelector("#carouselList2");
-let searchText = document.querySelector("#searchText");
+let dropDownEl = document.querySelector("#dropDown");
 
-let favtList = [];
+let favtMoviesList = [];
+let recommendedMoviesList = [];
 
-function addFavMovie(favtMovie, genereNames) {
-  //   console.log(favtMovie);
-  let findObj = favtList.find((each) => each.id === favtMovie.id);
-  if (findObj === undefined) {
-    favtList.push({ ...favtMovie, genereNames });
-  } else {
-    favtList = favtList.filter((each) => each.id !== favtMovie.id);
-  }
+// Rendering User Searched Movie
+async function renderSearchedMovie(movieData) {
+  const { title, overview, genres, poster_path, release_date, id } = movieData;
 
-  localStorage.setItem("favList", JSON.stringify(favtList));
+  let release_date_formate = release_date.split("-");
+  const genereNames = await getGenreNames(id);
 
-  let localData = localStorage.getItem("favList");
-
-  if (localData === null) {
-    favtList = [];
-  } else {
-    favtList = JSON.parse(localData);
-  }
-  //   console.log(localData, "local");
-
-  renderCarousel(favtList, splide2, carouselList2El);
+  searchResultsSection.innerHTML = `
+  <img class="search-movie" src= https://image.tmdb.org/t/p/w500/${poster_path} alt=${title} />
+  <div class="search-movie-content">
+  <h1 class="search-movie-title">${title}</h1>
+  <p class="genere">${genereNames}</p>
+  <p class="search-movie-release-date">Release Date: ${release_date_formate[2]}/${release_date_formate[1]}/${release_date_formate[0]}</p>
+  <p class="search-movie-description">${overview}</p>
+  </div>
+  `;
 }
 
-function renderCarousel(recMovieList, splide, listEl) {
-  listEl.textContent = "";
-  recMovieList.forEach(async (eachMovie) => {
-    searchText.textContent = "";
-
-    // console.log(eachMovie);
-    const { genre_ids, title, poster_path, release_date, overview, id } =
-      eachMovie;
-
-    const movieDetail = await fetch(
-      `https://api.themoviedb.org/3/movie/${id}?api_key=2ad18877c2ecce5382256b80fefda964`
+// Adding Movie Into Favorites List
+function addFavMovie(favtMovie, genereNames) {
+  let findObj = favtMoviesList.find((each) => each.id === favtMovie.id);
+  if (findObj === undefined) {
+    favtMoviesList.push({ ...favtMovie, genereNames, isFavt: true });
+    recommendedMoviesList = recommendedMoviesList.filter(
+      (each) => each.id !== favtMovie.id
     );
-    const res = await movieDetail.json();
-    // console.log(res);
-    const { genres } = res;
+  } else {
+    favtMoviesList = favtMoviesList.filter((each) => each.id !== favtMovie.id);
+  }
 
-    let genereNames = "";
-    genres.forEach((each) => {
-      genereNames += each.name + " ";
-    });
+  localStorage.setItem("favtMovies", JSON.stringify(favtMoviesList));
+  renderCarousel(recommendedMoviesList, carouselList1El, splide1);
+  renderCarousel(favtMoviesList, carouselList2El, splide2);
+}
 
-    // console.log(genereNames);
+// Render Movies Carousel
+async function renderCarousel(movieList, listEl, splide) {
+  listEl.textContent = "";
+  movieList.forEach(async (each) => {
+    const { genre_ids, title, poster_path, id } = each;
+    const genereNames = await getGenreNames(id);
 
     splide.destroy();
     let listItem = document.createElement("li");
     listItem.classList.add("splide__slide");
     listEl.appendChild(listItem);
 
+    let heartElContainer = document.createElement("div");
+    heartElContainer.classList.add("favt-heart-icon-container");
+    listItem.appendChild(heartElContainer);
+
+    let heartColor = each.isFavt !== undefined && "red-heart";
+
     let heartEL = document.createElement("i");
-    heartEL.classList.add("fa-solid", "fa-heart", "heart-icon");
+    heartEL.classList.add("fa-solid", "fa-heart", "heart-icon", heartColor);
     heartEL.addEventListener("click", () => {
-      heartEL.classList.toggle("red-heart");
-      addFavMovie(eachMovie, genereNames);
+      addFavMovie(each, genereNames);
     });
-    listItem.appendChild(heartEL);
+    heartElContainer.appendChild(heartEL);
 
     let imgEl = document.createElement("img");
     imgEl.classList.add("carousel-img");
     imgEl.src = `https://image.tmdb.org/t/p/w500/${poster_path}`;
     listItem.appendChild(imgEl);
 
+    let splideMovieContent = document.createElement("div");
+    splideMovieContent.classList.add("carousel-movie-content");
+    listItem.appendChild(splideMovieContent);
+
     let movieTitle = document.createElement("p");
     movieTitle.classList.add("movie-title");
     movieTitle.textContent = title;
-    listItem.appendChild(movieTitle);
+    splideMovieContent.appendChild(movieTitle);
 
     let genreEl = document.createElement("p");
     genreEl.classList.add("genre-para");
     genreEl.textContent = genereNames;
-    listItem.appendChild(genreEl);
+    splideMovieContent.appendChild(genreEl);
+
     splide.mount();
   });
 }
 
-async function renderSearchMovie(movie) {
-  const { genre_ids, title, poster_path, release_date, overview, id } = movie;
-  const movieDetail = await fetch(
+// Get Genre Names Based on Genre Ids
+async function getGenreNames(id) {
+  const responseMovie = await fetch(
     `https://api.themoviedb.org/3/movie/${id}?api_key=2ad18877c2ecce5382256b80fefda964`
   );
-  const res = await movieDetail.json();
-  //   console.log(res);
-  const { genres } = res;
 
-  let genereNames = "";
-  genres.forEach((each) => {
-    genereNames += each.name + " ";
-  });
+  const movieData = await responseMovie.json();
+  const { genres } = movieData;
+  let genereNames = genres.map((each) => each.name);
 
-  //   console.log(genereNames);
+  return genereNames.join(",");
+}
 
-  const getRecommended = await fetch(
+// Fetching Movies Data
+async function fetchData(e, movieName) {
+  let userInputElvalue = movieName === undefined ? e.target.value : movieName;
+
+  const responseDetails = await fetch(
+    `https://api.themoviedb.org/3/search/movie?query=${userInputElvalue}&api_key=2ad18877c2ecce5382256b80fefda964`
+  );
+
+  const responseMovieData = await responseDetails.json();
+  const { genre_ids } = responseMovieData.results[0];
+
+  const responseRecommended = await fetch(
     `https://api.themoviedb.org/3/discover/movie?api_key=2ad18877c2ecce5382256b80fefda964&with_genres=${genre_ids.join(
       ","
     )}`
   );
 
-  const recommendedData = await getRecommended.json();
-  //   console.log(recommendedData);
+  const recommendedMovies = await responseRecommended.json();
+  recommendedMoviesList = recommendedMovies.results;
+  // console.log(recommendedMoviesList);
 
-  const { results } = recommendedData;
-  //   console.log(results);
+  const localFavtMovies = localStorage.getItem("favtMovies");
+  if (localFavtMovies === null) {
+    favtMoviesList = [];
+  } else {
+    favtMoviesList = JSON.parse(localFavtMovies);
+  }
 
-  renderCarousel(results, splide1, carouselList1El);
-  searchResultsSection.innerHTML = `
-    <img class="search-movie" src=https://image.tmdb.org/t/p/w500/${poster_path} alt=${title} />
-    <div class="search-movie-content">
-    <h1 class="search-movie-title">${title}</h1>
-    <p class="genere">${genereNames}</p>
-    <p class="search-movie-release-date">Release Date: ${release_date}</p>
-    <p class="search-movie-description">${overview}</p>
-    </div>
-    `;
+  recommendedMoviesList = recommendedMoviesList.filter(
+    (recommendedMovie) =>
+      !favtMoviesList.some(
+        (favoriteMovie) => favoriteMovie.id === recommendedMovie.id
+      )
+  );
+  // console.log("filter", recommendedMoviesList);
+
+  renderSearchedMovie(responseMovieData.results[0]);
+  renderCarousel(recommendedMoviesList, carouselList1El, splide1);
+  renderCarousel(favtMoviesList, carouselList2El, splide2);
 }
 
-async function getUserValue() {
-  console.log(this.value);
-  const apiUrl = `https://api.themoviedb.org/3/search/movie?query=${this.value}&api_key=2ad18877c2ecce5382256b80fefda964`;
-  const options = {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyYWQxODg3N2MyZWNjZTUzODIyNTZiODBmZWZkYTk2NCIsInN1YiI6IjY1YjIzMjY1NmVlY2VlMDBjOTMzZjA2NSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.L1aSTQjDzIQ1BAH2OCc2A0kqegYT53YPtUNQHT2FD40`,
-    },
-  };
+// Filter Based on Dropdown Option
+function optionChange() {
+  switch (this.value) {
+    case "name":
+      favtMoviesList.sort((a, b) => a.title.localeCompare(b.title));
+      break;
 
-  const responseData = await fetch(apiUrl, options);
-  const data = await responseData.json();
-  //   console.log(data);
-  const { results } = data;
-  console.log(results);
+    case "year":
+      favtMoviesList.sort(
+        (a, b) =>
+          parseInt(a.release_date.split("-")[0]) -
+          parseInt(b.release_date.split("-")[0])
+      );
+      break;
 
-  const firstMovieData = results[0];
-  renderSearchMovie(firstMovieData);
+    case "sort":
+      favtMoviesList = favtMoviesList;
+      break;
+  }
+
+  renderCarousel(favtMoviesList, carouselList2El, splide2);
 }
-
-const fetchData = () => {
-  userInputEl.addEventListener("change", getUserValue);
-};
 
 let splide1 = new Splide("#carousel1", {
-  type: "loop",
-  perPage: 4,
-  gap: "30px",
+  pagination: false,
+  perPage: 5,
+  gap: "20px",
   breakpoints: {
-    768: {
+    425: {
       perPage: 2,
+    },
+    768: {
+      perPage: 3,
     },
   },
 });
 
 let splide2 = new Splide("#carousel2", {
-  perPage: 4,
-  gap: "30px",
+  pagination: false,
+  perPage: 5,
+  gap: "20px",
   breakpoints: {
-    768: {
+    425: {
       perPage: 2,
-      gap: "20px",
+    },
+    768: {
+      perPage: 3,
     },
   },
 });
-fetchData();
-renderCarousel(favtList, splide2, carouselList2El);
+
+function getData() {
+  fetchData(undefined, "avatar");
+}
+
+getData();
+
+userInputEl.addEventListener("change", fetchData);
+dropDownEl.addEventListener("change", optionChange);
